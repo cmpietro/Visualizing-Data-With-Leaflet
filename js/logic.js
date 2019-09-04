@@ -1,4 +1,20 @@
 //Visualizing DATA with leaflet
+
+//Store the API endpoint in queryUrl   (?)
+// var queryUrl = 'https://earthquake.usgs.gove/earthquakes/feed/v1.o/summary/all_week.geojson'
+
+//Get the request to the query URL
+// d3.json(queryUrl, function(data) {
+//    createFeatures(data.features);
+//    console.log(data.features)
+//});
+//function createFeatures(earthquakeData) {
+    //Define the function we want to run for each feature in the array
+    //give each feature a poppup describing place and time
+    //function onEachFeature(feature, layer) {
+
+  //  }
+//}
 //Selectable backgrounds for the map layers:
 //Gray Map Background
 var graymap_background = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/256/{z}/{x}/{y}?"+
@@ -23,8 +39,8 @@ var map = L.map("mapid", {
 graymap_background.addTo(map);
 
 //layers for the different data sets, earthquakes and tectonic plates(bonus)
-var earthquakes = new L.LayerGroup();
 var tectonicplates = new L.LayerGroup();
+var earthquakes = new L.LayerGroup();
 
 //base layers for the map
 var baseMaps = {
@@ -35,26 +51,26 @@ var baseMaps = {
 
 //Overlays
 var overlayMaps = {
-    "Earthquakes": earthquakes,
-    "Tectonic Plates": tectonicplates
+    "Tectonic Plates": tectonicplates,
+    "Earthquakes": earthquakes
 };
 
 // control which layers are visible using L
-L   
+L
     .control
     .layers(baseMaps, overlayMaps)
     .addTo(map);
 
 // get the earthquake geoJson data 
-d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson", function(data) {
+d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson", function(data) {
 
     function styleInfo(feature) {
         return {
             opacity: 1, 
             fillOpacity: 1, 
-            fillColor: getColor(feature.properties.mag),
+            fillColor: getColor(feature.properties.magnitude),
             color: "#000000",
-            radius: getRadius(feature.properties.mag),
+            radius: getRadius(feature.properties.magnitude),
             stroke: true,
             weight: 0.5
         };
@@ -105,10 +121,9 @@ var legend = L.control({
     position: 'bottomright'
 });
 
-legend.onAdd = function(map) {
-    var div = L
-    .DomUtil
-    .create('div', 'info legend'),
+legend.onAdd = function() {
+    var div = L.DomUtil
+    .create('div', 'info legend');
 
     var grades = [0, 1, 2, 3, 4, 5];
     var colors = [
@@ -122,7 +137,7 @@ legend.onAdd = function(map) {
     
     for (var i = 0; i <grades.length; i++) {
         div.innerHTML += '<i style="background: ' +  colors[i] + '"></i> ' + 
-        grades[i] + (grades[i + 1] ? '&ndash;' + grades(i + 1) + '<br>' : '+');
+        grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
     }
     return div;
 
@@ -131,7 +146,7 @@ legend.onAdd = function(map) {
 legend.addTo(map);
 
 //retrieve tectonic plate geoJson data
-d3.json('https://raw.githubusercontenct.come/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json', 
+d3.json('https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json', 
     function(platedata) {
 
         L.geoJson(platedata, {
@@ -140,7 +155,7 @@ d3.json('https://raw.githubusercontenct.come/fraxen/tectonicplates/master/GeoJSO
         })
         .addTo(tectonicplates);
 
-        tectoniccplates.addTo(map);
+        tectonicplates.addTo(map);
     });
 
 });
