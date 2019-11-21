@@ -11,4 +11,4 @@ config.js
 css - folder
 style.css
 
-Sadly, I got this homework functioning well, prior to the deadline, then prior to submitting I tested once again and am having issues with website responsivness and no longer have time to research and correct the issues.  I am submitting the homework as is and will correct as soon as I have time.  
+Sadly, this homework was functioning well, prior to the deadline, then prior to submitting I tested once again had issues with website responsivness. I am submitting the homework as is and will correct asap.  
